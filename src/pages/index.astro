@@ -10,7 +10,7 @@ import TypedBlogPost from "../components/TypedBlogPost.astro";
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 // const posts-old = Object.values(import.meta.glob('./posts-old/*.{md,mdx}', { eager: true }));
-const blogPosts = await getCollection( 'blog' );
+const blogPosts = await getCollection( 'blog', (post) => post.data.isDraft == false);
 ---
 
 <Layout title="Alfredo's Blog">
@@ -21,6 +21,9 @@ const blogPosts = await getCollection( 'blog' );
 				{ siteConfig.title }
 			</h1>
 
+			<a class="mr-2" href="/blog/1">Blog Paginado</a>
+			<a class="mr-2" href="/authors">Autores</a>
+
 			<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
 
 				{ blogPosts.map((post) => <TypedBlogPost post={post}/> )}
@@ -29,3 +32,14 @@ const blogPosts = await getCollection( 'blog' );
 		</div>
 	</section>
 </Layout>
+
+<style>
+	@reference "tailwindcss";
+	a {
+		@apply text-blue-500 hover:underline;
+	}
+
+	.disabled {
+		@apply bg-gray-600 hover:bg-gray-600;
+	}
+</style>
